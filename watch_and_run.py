@@ -8,7 +8,7 @@ import sys
 # Replace this with the actual path to your Python executable inside your conda env
 PYTHON_PATH = sys.executable  # This grabs the current Python path
 
-COMMAND = [PYTHON_PATH, "run_all.py"]
+COMMAND = [PYTHON_PATH, "run.py"]
 
 class ChangeHandler(FileSystemEventHandler):
     def __init__(self):

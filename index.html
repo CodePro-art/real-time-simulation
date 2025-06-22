@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Robot Dashboard</title>
+    <style>
+        #log { height: 150px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+        #joystick button { margin: 4px; }
+    </style>
+    </head>
+    <body>
+    <h1>Real-Time Robot Dashboard</h1>
+
+    <div>
+        <strong>Temperature:</strong> <span id="temp">--</span>°C<br />
+        <strong>Distance:</strong> <span id="distance">--</span> cm<br />
+        <strong>Battery:</strong> <span id="battery">--</span>%
+    </div>
+
+    <div id="joystick">
+        <h3>Joystick</h3>
+        <button onclick="sendCommand('FORWARD')">⬆️</button><br />
+        <button onclick="sendCommand('LEFT')">⬅️</button>
+        <button onclick="sendCommand('STOP')">⏹️</button>
+        <button onclick="sendCommand('RIGHT')">➡️</button><br />
+        <button onclick="sendCommand('BACK')">⬇️</button>
+    </div>
+
+    <div>
+        <h3>Logs</h3>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:5500');
+
+        const log = (msg) => {
+        const div = document.getElementById('log');
+        div.innerHTML += msg + "<br />";
+        div.scrollTop = div.scrollHeight;
+        };
+
+        socket.onopen = () => {
+        log("✅ Connected to server");
+        };
+
+        socket.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        if (msg.type === "sensor") {
+            document.getElementById("temp").innerText = msg.temp;
+            document.getElementById("distance").innerText = msg.distance;
+            document.getElementById("battery").innerText = msg.battery;
+            log(`📡 Sensor update: T=${msg.temp}, D=${msg.distance}, B=${msg.battery}`);
+        } else if (msg.type === "ack") {
+            log(`✅ ${msg.msg}`);
+        }
+        };
+
+        function sendCommand(cmd) {
+        socket.send(cmd);
+        log(`🕹️ Sent command: ${cmd}`);
+        }
+    </script>
+</body>
+</html>
