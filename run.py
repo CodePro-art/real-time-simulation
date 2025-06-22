@@ -39,7 +39,7 @@ def main():
     http_thread.start()
 
     # Optionally open the browser
-    webbrowser.open("http://localhost:8000/index.html")
+    webbrowser.open("http://localhost:8000/public/index.html")
 
     # Start WebSocket server in the main asyncio loop
     asyncio.run(start_ws_server())
