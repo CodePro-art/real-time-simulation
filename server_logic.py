@@ -1,39 +1,38 @@
 import asyncio
 import websockets
-import json
-import random
+import json, math, time, random
 
-connected_clients = set()
-
-async def simulate_and_send():
-    while True:
-        data = {
-            "type": "sensor",
-            "temp": round(random.uniform(20.0, 30.0), 2),
-            "distance": random.randint(0, 100),
-            "battery": round(random.uniform(60.0, 100.0), 1)
-        }
-        if connected_clients:
-            message = json.dumps(data)
-            await asyncio.wait([client.send(message) for client in connected_clients])
-        await asyncio.sleep(1)  # every second
-
+robot_x, robot_y, angle = 0, 0, 0
 async def handler(websocket):
     print("Client connected")
-    connected_clients.add(websocket)
     try:
-        async for message in websocket:
-            print(f"Received: {message}")
-            # Optional: handle joystick commands here
-            await websocket.send(json.dumps({"type": "ack", "msg": f"Command received: {message}"}))
+        while True:
+            # Move robot in a circle
+            global robot_x, robot_y, angle
+            angle += 0.1
+            robot_x = 50 * math.cos(angle)
+            robot_y = 50 * math.sin(angle)
+
+            data = {
+                "type": "update",
+                "temp": round(20 + 5 * random.random(), 1),
+                "battery": round(70 + 30 * random.random(), 1),
+                "dist": round(100 + 20 * random.random(), 1),
+                "robot": {
+                    "x": robot_x,
+                    "y": robot_y,
+                    "dir": angle
+                }
+            }
+
+            await websocket.send(json.dumps(data))
+            await asyncio.sleep(1)
     except websockets.exceptions.ConnectionClosedOK:
-        print("Connection closed")
-    finally:
-        connected_clients.remove(websocket)
+        print("Client disconnected")
 
 async def main():
     async with websockets.serve(handler, "localhost", 5500):
         print("WebSocket server started at ws://localhost:5500")
-        await simulate_and_send()
+        await asyncio.Future()
 
 asyncio.run(main())

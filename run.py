@@ -4,6 +4,7 @@ import http.server
 import socketserver
 import threading
 import webbrowser
+import json
 
 # === WebSocket server ===
 
@@ -12,8 +13,11 @@ async def ws_handler(websocket):
     try:
         async for message in websocket:
             print(f"Received: {message}")
-            reply = f"Data received as: {message}!"
-            await websocket.send(reply)
+            reply = {
+                "type": "ack",
+                "cmd": message
+            }
+            await websocket.send(json.dumps(reply))
     except websockets.exceptions.ConnectionClosedOK:
         print("Connection closed")
 
