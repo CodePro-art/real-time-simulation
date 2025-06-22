@@ -12,7 +12,7 @@ async def ws_handler(websocket):
     print("Client connected")
     try:
         async for message in websocket:
-            print(f"Received: {message}")
+            # print(f"Received: {message}")
             reply = {
                 "type": "ack",
                 "cmd": message
@@ -22,8 +22,8 @@ async def ws_handler(websocket):
         print("Connection closed")
 
 async def start_ws_server():
-    async with websockets.serve(ws_handler, "localhost", 5500):
-        print("WebSocket server started at ws://localhost:5500")
+    async with websockets.serve(ws_handler, "localhost", 5501):
+        print("WebSocket server started at ws://localhost:5501")
         await asyncio.Future()  # run forever
 
 # === HTTP server ===

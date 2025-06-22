@@ -5,19 +5,28 @@ import subprocess
 import time
 import sys
 
-# Replace this with the actual path to your Python executable inside your conda env
-PYTHON_PATH = sys.executable  # This grabs the current Python path
+PYTHON_PATH = sys.executable
 
-COMMAND = [PYTHON_PATH, "run.py"]
+# Commands to run
+COMMANDS = [
+    [PYTHON_PATH, "run.py"],
+    [PYTHON_PATH, "server_logic.py"]
+]
 
 class ChangeHandler(FileSystemEventHandler):
     def __init__(self):
-        self.process = subprocess.Popen(COMMAND)
+        self.processes = []
+        self.start_processes()
+
+    def start_processes(self):
+        # Start all commands
+        self.processes = [subprocess.Popen(cmd) for cmd in COMMANDS]
 
     def restart(self):
-        print("🔁 Detected change, restarting...")
-        self.process.kill()
-        self.process = subprocess.Popen(COMMAND)
+        print("🔁 Detected change, restarting all processes...")
+        for p in self.processes:
+            p.kill()
+        self.start_processes()
 
     def on_any_event(self, event):
         if event.src_path.endswith((".py", ".html", ".js")):
@@ -30,11 +39,13 @@ if __name__ == "__main__":
     observer.schedule(event_handler, path=path, recursive=True)
     observer.start()
 
-    print("👀 Watching for file changes...")
+    print("👀 Watching for file changes and managing both servers...")
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
-        event_handler.process.kill()
+        for p in event_handler.processes:
+            p.kill()
     observer.join()
+    print("🛑 Stopped watching and killed all processes.")

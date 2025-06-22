@@ -1,15 +1,16 @@
 <!DOCTYPE html><html><head>
 <meta charset="UTF-8"><title>Robot Dashboard</title>
-
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-    #controls button{width:60px;height:60px;}
-    #log{height:100px;overflow:auto;border:1px solid #ccc;}
-</style>
-    </head><body>
+
+<link rel="stylesheet" href="style.css">
+</head>
+    <body>
     <h2>Sensor & Robot Live View</h2>
-    <canvas id="chart" width="400" height="120"></canvas>
-    <canvas id="sim" width="300" height="300" style="border:1px solid #333"></canvas>
+    <div id="dashboard">
+        <canvas id="chart" width="400" height="120"></canvas>
+        <canvas id="sim" width="500" height="500" style="border:1px solid #333333"></canvas>
+    </div>
     <div id="controls">
         <button onclick="send('LEFT')">⬅️</button>
         <button onclick="send('STOP')">⏹️</button>
@@ -20,4 +21,5 @@
         <div id="log"></div>
     </div>
     <script src="script.js"></script>
-</body></html>
+    </body>
+</html>
