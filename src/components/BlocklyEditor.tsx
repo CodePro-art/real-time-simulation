@@ -90,15 +90,15 @@ const BlocklyEditor: React.FC<BlocklyEditorProps> = ({ onCodeChange }) => {
       return `turn('${direction}', ${angle});\n`;
     };
 
-    Blockly.JavaScript['robot_stop'] = function(block: any) {
+    Blockly.JavaScript['robot_stop'] = function(_block: any) {
       return `stopRobot();\n`;
     };
 
-    Blockly.JavaScript['sensor_ultrasonic'] = function(block: any) {
+    Blockly.JavaScript['sensor_ultrasonic'] = function(_block: any) {
       return ['getUltrasonicDistance()', Blockly.JavaScript.ORDER_FUNCTION_CALL];
     };
 
-    Blockly.JavaScript['sensor_color'] = function(block: any) {
+    Blockly.JavaScript['sensor_color'] = function(_block: any) {
       return ['getColorSensor()', Blockly.JavaScript.ORDER_FUNCTION_CALL];
     };
 

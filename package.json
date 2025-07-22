@@ -11,23 +11,25 @@
     "start:all": "concurrently \"npm run dev\" \"npm run server\""
   },
   "dependencies": {
+    "@types/three": "^0.158.3",
+    "@types/uuid": "^10.0.0",
+    "blockly": "^10.2.2",
+    "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@types/three": "^0.158.3",
-    "three": "^0.158.0",
-    "blockly": "^10.2.2",
     "socket.io-client": "^4.7.4",
-    "lucide-react": "^0.294.0"
+    "three": "^0.158.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.8",
-    "tailwindcss": "^3.3.6",
     "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
     "postcss": "^8.4.32",
-    "concurrently": "^8.2.2"
+    "tailwindcss": "^3.3.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
   }
 }
