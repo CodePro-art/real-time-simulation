@@ -1,0 +1,9 @@
+@@ .. @@
+   "scripts": {
+     "dev": "vite",
+     "build": "tsc && vite build",
+-    "preview": "vite preview"
++    "preview": "vite preview",
++    "server": "cd server && npm run dev",
++    "start:all": "concurrently \"npm run dev\" \"npm run server\""
+   },
